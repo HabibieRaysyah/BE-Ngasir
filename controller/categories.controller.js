@@ -50,10 +50,10 @@ module.exports = {
       };
 
       const data = {
-        store_id: store_id,
-        categorie_id: categorie_id,
+        store_id: Number(store_id),
+        categorie_id: Number(categorie_id),
         name: name,
-        status: status,
+        status: Boolean(status),
       };
 
       const validate = v.validate(data, schema);
@@ -97,11 +97,9 @@ module.exports = {
         return res.status(400).json(response(400, "Validate Error", validate));
       }
 
-      console.log(data.categori_id);
 
       const deleteData = await Categorie.destroy({
         where: { id : data.categori_id },
-        force: true,
       });
 
       return res.status(200).json(response(200, "Success", deleteData));

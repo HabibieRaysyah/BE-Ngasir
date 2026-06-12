@@ -52,9 +52,12 @@ module.exports = {
         .toString(36)
         .substring(2, 8)
         .toUpperCase();
+
       const code_transaction = `TRX-${timestamp}-${randomHex}`;
 
-      const today = new Date().toISOString().split("T")[0];
+      const today = new Date().toLocaleDateString("sv-SE");
+
+      console.log(today);
 
       const transaction = await Transaction.create({
         store_id: data.store_id,
@@ -78,6 +81,8 @@ module.exports = {
         console.log(productId.selling_price);
         console.log(subTotal);
 
+        const today = new Date().toLocaleDateString("sv-SE");
+
         const transactionIitems = await Transaction_Item.create({
           store_id: store_id,
           transaction_id: transactionId.id,
@@ -85,6 +90,7 @@ module.exports = {
           quantity: product.quantity,
           price: productId.selling_price,
           subtotal: subTotal,
+          date: today,
         });
 
         const updateProduct = await Product.update(
@@ -100,7 +106,7 @@ module.exports = {
           product_id: productIdNew.id,
           user_id: user_id,
           type: "Sale",
-          difference:   product.quantity,
+          difference: product.quantity,
           stock: productIdNew.stock,
           referensi: transactionId.code_transaction,
           notes: "Penjual Pos",

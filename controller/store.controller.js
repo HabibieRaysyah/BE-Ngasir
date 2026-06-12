@@ -34,13 +34,25 @@ module.exports = {
           .json(response(400, "Validasi Error", "Image is not found"));
       }
 
-      const angkaRandom = Math.floor(Math.random() * 100) + 1;
+      const  generateRandomCode = (length) => {
+        const characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+          result += characters.charAt(
+            Math.floor(Math.random() * characters.length),
+          );
+        }
+        return result;
+      }
+      
+      const codeRandom = generateRandomCode(8);
 
       const store = await Store.create({
         owner_id: data.user_id,
         name: data.name,
         type: data.type,
-        code_store: angkaRandom,
+        code_store: codeRandom,
         image: req.file.filename,
       });
 
